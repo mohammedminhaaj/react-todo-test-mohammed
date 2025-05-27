@@ -34,21 +34,12 @@ export function ClunkyTodoList() {
 
 	// Function to toggle the completion status of a task
 	// It updates the task's completed status based on its current state
-	// It creates a new task object to avoid mutating the state directly
 	const handleToggleComplete = (id: number) => {
-		const updatedTasks = tasks.map((task) => {
-			if (task.id === id) {
-				let tempTask = {
-					id: task.id,
-					text: task.text,
-					completed: task.completed,
-				};
-				tempTask.completed = !tempTask.completed;
-				return tempTask;
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
+		setTasks((prev) =>
+			prev.map((task) =>
+				task.id === id ? { ...task, completed: !task.completed } : task
+			)
+		);
 	};
 
 	// State to filter tasks which contain two or more words
@@ -77,12 +68,12 @@ export function ClunkyTodoList() {
 	}, [tasks]);
 
 	// Function to remove a task by its ID
-	const removeTask = (id: number) => {
+	const handleRemoveTask = (id: number) => {
 		setTasks(tasks.filter((task) => task.id !== id));
 	};
 
 	// Function to remove all completed tasks
-	const removeAllCompletedTasks = () => {
+	const handleRemoveAllCompletedTasks = () => {
 		setTasks(tasks.filter((task) => !task.completed));
 	};
 
@@ -102,7 +93,9 @@ export function ClunkyTodoList() {
 				placeholder='Add new task'
 			/>
 			<button onClick={handleAddTask}>Add</button>
-			<button onClick={removeAllCompletedTasks}>Remove Completed</button>
+			<button onClick={handleRemoveAllCompletedTasks}>
+				Remove Completed
+			</button>
 			<div>
 				<button onClick={() => setFilter('all')}>All</button>
 				<button onClick={() => setFilter('active')}>Active</button>
@@ -117,8 +110,8 @@ export function ClunkyTodoList() {
 				{filteredTasks.map((task) => (
 					<TaskItem
 						key={task.id}
-						handleToggleComplete={handleToggleComplete}
-						removeTask={removeTask}
+						onToggleComplete={handleToggleComplete}
+						onRemove={handleRemoveTask}
 						task={task}
 					/>
 				))}

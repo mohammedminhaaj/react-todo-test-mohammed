@@ -2,19 +2,19 @@ import { Task } from './types';
 
 type TaskItemProps = {
 	task: Task;
-	handleToggleComplete: (id: number) => void;
-	removeTask: (id: number) => void;
+	onToggleComplete: (id: number) => void;
+	onRemove: (id: number) => void;
 };
 const TaskItem: React.FC<TaskItemProps> = ({
 	task,
-	handleToggleComplete,
-	removeTask,
+	onToggleComplete,
+	onRemove,
 }) => (
 	<li key={task.id}>
 		<input
 			type='checkbox'
 			checked={task.completed}
-			onChange={() => handleToggleComplete(task.id)}
+			onChange={() => onToggleComplete(task.id)}
 		/>
 		<span
 			style={{
@@ -31,7 +31,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
 			}}
 			onClick={(event) => {
 				event.preventDefault();
-				removeTask(task.id);
+				onRemove(task.id);
 			}}>
 			[x]
 		</a>
