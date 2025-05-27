@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import TaskItem from './TaskItem';
-import { Task } from './types';
-import { Filter } from './enums';
+import { Task } from '../types';
+import { Filter } from '../enums';
 
 export function ClunkyTodoList() {
 	// State to manage tasks, initially with some sample tasks
@@ -17,6 +17,9 @@ export function ClunkyTodoList() {
 	// State to manage the filter for tasks
 	const [filter, setFilter] = useState<Filter>(Filter.All);
 
+	// State to filter tasks which contain two or more words
+	const [filterByMultiWord, setFilterByMultiWord] = useState<boolean>(false);
+
 	// Fuction to handle input change for the new task
 	const handleInputChange = (event) => {
 		setNewTask(event.target.value);
@@ -31,6 +34,7 @@ export function ClunkyTodoList() {
 				...prev,
 				{ id: Date.now(), text: newTask, completed: false },
 			]);
+			// Resetting the new task input field after adding the task
 			setNewTask('');
 		}
 	};
@@ -44,9 +48,6 @@ export function ClunkyTodoList() {
 			)
 		);
 	};
-
-	// State to filter tasks which contain two or more words
-	const [filterByMultiWord, setFilterByMultiWord] = useState<boolean>(false);
 
 	// Memoized value to filter tasks based on the selected filter
 	// Removing unnecessary use of useEffect for filtering
