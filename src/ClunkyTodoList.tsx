@@ -62,7 +62,7 @@ export function ClunkyTodoList() {
   // Memoized value to calculate the total count of tasks
   const totalCount = useMemo(() => {
     return tasks.length;
-  }, []);
+  }, [tasks]);
 
   return (
     <div>
