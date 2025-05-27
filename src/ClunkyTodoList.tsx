@@ -68,8 +68,14 @@ export function ClunkyTodoList() {
 		return tasks.length;
 	}, [tasks]);
 
+	// Function to remove a task by its ID
 	const removeTask = (id) => {
 		setTasks(tasks.filter((task) => task.id !== id));
+	};
+
+	// Function to remove all completed tasks
+	const removeAllCompletedTasks = () => {
+		setTasks(tasks.filter((task) => !task.completed));
 	};
 
 	return (
@@ -83,6 +89,7 @@ export function ClunkyTodoList() {
 				placeholder='Add new task'
 			/>
 			<button onClick={handleAddTask}>Add</button>
+			<button onClick={removeAllCompletedTasks}>Remove Completed</button>
 			<div>
 				<button onClick={() => setFilter('all')}>All</button>
 				<button onClick={() => setFilter('active')}>Active</button>
