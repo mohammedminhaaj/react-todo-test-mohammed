@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import TaskItem from './TaskItem';
 
 export function ClunkyTodoList() {
 	// State to manage tasks, initially with some sample tasks
@@ -117,36 +118,12 @@ export function ClunkyTodoList() {
 			</div>
 			<ul>
 				{tasksToRender.map((task, index) => (
-					<li key={task.id}>
-						<input
-							type='checkbox'
-							checked={task.completed}
-							onChange={() => handleToggleComplete(task.id)}
-						/>
-						<span
-							style={{
-								textDecoration: task.completed
-									? 'line-through'
-									: 'none',
-							}}>
-							{task.text}
-						</span>
-						<a
-							href='#'
-							title='Remove task'
-							style={{
-								marginLeft: '10px',
-								cursor: 'pointer',
-								textDecoration: 'none',
-								color: 'red',
-							}}
-							onClick={(event) => {
-								event.preventDefault();
-								removeTask(task.id);
-							}}>
-							[x]
-						</a>
-					</li>
+					<TaskItem
+						key={task.id}
+						handleToggleComplete={handleToggleComplete}
+						removeTask={removeTask}
+						task={task}
+					/>
 				))}
 			</ul>
 		</div>
