@@ -1,18 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
 import TaskItem from './TaskItem';
+import { Task } from './types';
+import { Filter } from './enums';
 
 export function ClunkyTodoList() {
 	// State to manage tasks, initially with some sample tasks
-	const [tasks, setTasks] = useState([
+	const [tasks, setTasks] = useState<Task[]>([
 		{ id: 1, text: 'Learn React', completed: false },
 		{ id: 2, text: 'Write code', completed: true },
 		{ id: 3, text: 'Eat lunch', completed: false },
 	]);
+
 	// State to manage the new task input
 	const [newTask, setNewTask] = useState('');
 
 	// State to manage the filter for tasks
-	const [filter, setFilter] = useState('all');
+	const [filter, setFilter] = useState<Filter>(Filter.All);
 
 	// Fuction to handle input change for the new task
 	const handleInputChange = (event) => {
@@ -49,9 +52,9 @@ export function ClunkyTodoList() {
 	// Removing unnecessary use of useEffect for filtering
 	const filteredTasks = useMemo(() => {
 		let filtered = tasks;
-		if (filter === 'completed') {
+		if (filter === Filter.Completed) {
 			filtered = filtered.filter((task) => task.completed);
-		} else if (filter === 'active') {
+		} else if (filter === Filter.Active) {
 			filtered = filtered.filter((task) => !task.completed);
 		}
 		if (filterByMultiWord) {
@@ -97,9 +100,9 @@ export function ClunkyTodoList() {
 				Remove Completed
 			</button>
 			<div>
-				<button onClick={() => setFilter('all')}>All</button>
-				<button onClick={() => setFilter('active')}>Active</button>
-				<button onClick={() => setFilter('completed')}>
+				<button onClick={() => setFilter(Filter.All)}>All</button>
+				<button onClick={() => setFilter(Filter.Active)}>Active</button>
+				<button onClick={() => setFilter(Filter.Completed)}>
 					Completed
 				</button>
 				<button onClick={handleFilterByMultiWord}>
