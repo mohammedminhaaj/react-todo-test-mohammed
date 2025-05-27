@@ -57,7 +57,7 @@ export function ClunkyTodoList() {
       filteredTasks = tasks.filter((task) => !task.completed);
     }
     setTasksToRender(filteredTasks);
-  }, [tasks]);
+  }, [filter, tasks]);
 
   // Memoized value to calculate the total count of tasks
   const totalCount = useMemo(() => {
@@ -82,7 +82,7 @@ export function ClunkyTodoList() {
       </div>
       <ul>
         {tasksToRender.map((task, index) => (
-          <li key={index}>
+          <li key={task.id}>
             <input
               type="checkbox"
               checked={task.completed}
