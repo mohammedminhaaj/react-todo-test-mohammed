@@ -1,18 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 export function ClunkyTodoList() {
+  // State to manage tasks, initially with some sample tasks
   const [tasks, setTasks] = useState([
     { id: 1, text: "Learn React", completed: false },
     { id: 2, text: "Write code", completed: true },
     { id: 3, text: "Eat lunch", completed: false },
   ]);
+  // State to manage the new task input
   const [newTask, setNewTask] = useState("");
+
+  // State to manage the filter for tasks
   const [filter, setFilter] = useState("all");
 
+  // Fuction to handle input change for the new task
   const handleInputChange = (event) => {
     setNewTask(event.target.value);
   };
 
+  // Function to handle adding a new task
+  // It checks if the new task is not empty, then adds it to the tasks array
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
       const tempTasks = [...tasks];
@@ -22,6 +29,9 @@ export function ClunkyTodoList() {
     }
   };
 
+  // Function to toggle the completion status of a task
+  // It updates the task's completed status based on its current state
+  // It creates a new task object to avoid mutating the state directly
   const handleToggleComplete = (id) => {
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
@@ -34,7 +44,11 @@ export function ClunkyTodoList() {
     setTasks(updatedTasks);
   };
 
+  // State to manage the tasks to render based on the filter
   const [tasksToRender, setTasksToRender] = useState<any[]>([])
+
+  // Effect to filter tasks based on the selected filter
+  // It updates the tasksToRender state whenever the tasks or filter changes
   useEffect(() => {
     let filteredTasks = tasks;
     if (filter === "completed") {
@@ -45,6 +59,7 @@ export function ClunkyTodoList() {
     setTasksToRender(filteredTasks);
   }, [tasks]);
 
+  // Memoized value to calculate the total count of tasks
   const totalCount = useMemo(() => {
     return tasks.length;
   }, []);
