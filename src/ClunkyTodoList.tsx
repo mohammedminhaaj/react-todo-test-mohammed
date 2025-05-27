@@ -23,9 +23,11 @@ export function ClunkyTodoList() {
 	// It checks if the new task is not empty, then adds it to the tasks array
 	const handleAddTask = () => {
 		if (newTask.trim() !== '') {
-			const tempTasks = [...tasks];
-			tempTasks.push({ id: Date.now(), text: newTask, completed: false });
-			setTasks(tempTasks);
+			// Removing the use of temporary variable and directly updating the state by spreading the previous tasks
+			setTasks((prev) => [
+				...prev,
+				{ id: Date.now(), text: newTask, completed: false },
+			]);
 			setNewTask('');
 		}
 	};
