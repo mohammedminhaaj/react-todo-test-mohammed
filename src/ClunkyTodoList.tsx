@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TaskItem from './TaskItem';
 
 export function ClunkyTodoList() {
@@ -33,7 +33,7 @@ export function ClunkyTodoList() {
 	// Function to toggle the completion status of a task
 	// It updates the task's completed status based on its current state
 	// It creates a new task object to avoid mutating the state directly
-	const handleToggleComplete = (id) => {
+	const handleToggleComplete = (id: number) => {
 		const updatedTasks = tasks.map((task) => {
 			if (task.id === id) {
 				let tempTask = {
@@ -49,30 +49,25 @@ export function ClunkyTodoList() {
 		setTasks(updatedTasks);
 	};
 
-	// State to manage the tasks to render based on the filter
-	const [tasksToRender, setTasksToRender] = useState<any[]>([]);
-
 	// State to filter tasks which contain two or more words
 	const [filterByMultiWord, setFilterByMultiWord] = useState<boolean>(false);
 
-	// Effect to filter tasks based on the selected filter
-	// It updates the tasksToRender state whenever the tasks or filter changes
-	useEffect(() => {
-		let filteredTasks = tasks;
+	// Memoized value to filter tasks based on the selected filter
+	// Removing unnecessary use of useEffect for filtering
+	const filteredTasks = useMemo(() => {
+		let filtered = tasks;
 		if (filter === 'completed') {
-			filteredTasks = tasks.filter((task) => task.completed);
+			filtered = filtered.filter((task) => task.completed);
 		} else if (filter === 'active') {
-			filteredTasks = tasks.filter((task) => !task.completed);
+			filtered = filtered.filter((task) => !task.completed);
 		}
-		// If filterByMultiWord is true, filter tasks that have two or more words
 		if (filterByMultiWord) {
-			filteredTasks = filteredTasks.filter(
-				(task) => task.text.split(' ').length >= 2
+			filtered = filtered.filter(
+				(task) => task.text.trim().split(/\s+/).length >= 2
 			);
 		}
-
-		setTasksToRender(filteredTasks);
-	}, [filter, tasks, filterByMultiWord]);
+		return filtered;
+	}, [tasks, filter, filterByMultiWord]);
 
 	// Memoized value to calculate the total count of tasks
 	const totalCount = useMemo(() => {
@@ -80,7 +75,7 @@ export function ClunkyTodoList() {
 	}, [tasks]);
 
 	// Function to remove a task by its ID
-	const removeTask = (id) => {
+	const removeTask = (id: number) => {
 		setTasks(tasks.filter((task) => task.id !== id));
 	};
 
@@ -117,7 +112,7 @@ export function ClunkyTodoList() {
 				</button>
 			</div>
 			<ul>
-				{tasksToRender.map((task, index) => (
+				{filteredTasks.map((task) => (
 					<TaskItem
 						key={task.id}
 						handleToggleComplete={handleToggleComplete}

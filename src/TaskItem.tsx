@@ -2,13 +2,13 @@ import { Task } from './types';
 
 type TaskItemProps = {
 	task: Task;
-    handleToggleComplete: (id: string) => void;
-    removeTask: (id: string) => void;
+	handleToggleComplete: (id: number) => void;
+	removeTask: (id: number) => void;
 };
 const TaskItem: React.FC<TaskItemProps> = ({
-    task,
-    handleToggleComplete,
-    removeTask,
+	task,
+	handleToggleComplete,
+	removeTask,
 }) => (
 	<li key={task.id}>
 		<input
@@ -22,14 +22,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
 			}}>
 			{task.text}
 		</span>
+		{/* Anchors are primarily used for navigation. Buttons should be used instead of anchors */}
 		<a
 			href='#'
 			title='Remove task'
 			style={{
 				marginLeft: '10px',
-				cursor: 'pointer',
-				textDecoration: 'none',
-				color: 'red',
 			}}
 			onClick={(event) => {
 				event.preventDefault();
