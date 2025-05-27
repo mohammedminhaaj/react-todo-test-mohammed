@@ -51,6 +51,9 @@ export function ClunkyTodoList() {
 	// State to manage the tasks to render based on the filter
 	const [tasksToRender, setTasksToRender] = useState<any[]>([]);
 
+	// State to filter tasks which contain two or more words
+	const [filterByMultiWord, setFilterByMultiWord] = useState<boolean>(false);
+
 	// Effect to filter tasks based on the selected filter
 	// It updates the tasksToRender state whenever the tasks or filter changes
 	useEffect(() => {
@@ -60,8 +63,15 @@ export function ClunkyTodoList() {
 		} else if (filter === 'active') {
 			filteredTasks = tasks.filter((task) => !task.completed);
 		}
+		// If filterByMultiWord is true, filter tasks that have two or more words
+		if (filterByMultiWord) {
+			filteredTasks = filteredTasks.filter(
+				(task) => task.text.split(' ').length >= 2
+			);
+		}
+
 		setTasksToRender(filteredTasks);
-	}, [filter, tasks]);
+	}, [filter, tasks, filterByMultiWord]);
 
 	// Memoized value to calculate the total count of tasks
 	const totalCount = useMemo(() => {
@@ -76,6 +86,11 @@ export function ClunkyTodoList() {
 	// Function to remove all completed tasks
 	const removeAllCompletedTasks = () => {
 		setTasks(tasks.filter((task) => !task.completed));
+	};
+
+	// Function to toggle the filter for tasks with two or more words
+	const handleFilterByMultiWord = () => {
+		setFilterByMultiWord((prev) => !prev);
 	};
 
 	return (
@@ -95,6 +110,9 @@ export function ClunkyTodoList() {
 				<button onClick={() => setFilter('active')}>Active</button>
 				<button onClick={() => setFilter('completed')}>
 					Completed
+				</button>
+				<button onClick={handleFilterByMultiWord}>
+					{filterByMultiWord ? 'Show All' : 'Filter by Multi-Word'}
 				</button>
 			</div>
 			<ul>
